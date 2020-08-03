@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:csv/csv.dart';
+import 'package:pnb_transaction_verifier_for_account_ledger/transactionModal.dart';
+import 'package:intl/intl.dart';
 
 //int calculate() {
 //  return 6 * 7;
@@ -35,15 +37,30 @@ void printTransactionsFromCsv(
 }
 
 void printTransactionsInFormat(List<dynamic> csvTransactions) {
+  var transactions = <TransactionModal>[];
   for (var i = 0; i < csvTransactions.length; i = i + 11) {
-    print(csvTransactions[i].toString() +
+    var transactionDate = csvTransactions[i];
+    var withdrawAmount = csvTransactions[i + 4].toString();
+    var depositAmount = csvTransactions[i + 6].toString();
+    var balanceAmount = csvTransactions[i + 7].toString();
+    var narration = csvTransactions[i + 8];
+
+    print(transactionDate +
         '\t' +
-        csvTransactions[i + 4].toString() +
+        withdrawAmount.toString() +
         '\t' +
-        csvTransactions[i + 6].toString() +
+        depositAmount +
         '\t' +
-        csvTransactions[i + 7].toString() +
+        balanceAmount +
         '\t' +
-        csvTransactions[i + 8].toString());
+        narration);
+
+    transactions.add(TransactionModal(
+        DateFormat('d/M/yyyy').parse(transactionDate),
+        withdrawAmount.isEmpty ? 0 : double.parse(withdrawAmount.replaceAll(',', '')),
+        depositAmount.isEmpty ? 0 : double.parse(depositAmount.replaceAll(',', '')),
+        double.parse(
+            balanceAmount.substring(0, (balanceAmount.length - 4)).replaceAll(',', '')),
+        narration));
   }
 }
