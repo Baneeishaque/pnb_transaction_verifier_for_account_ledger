@@ -42,22 +42,29 @@ void comparePnbTransactionsListFromCsvAndApi(
     print(
         'Warning : Unmatched Transaction Lists, please equalize the size of lists...\n');
   }
+  var unmatchedEntriesCount = 0;
   for (var i = 0; i < pnbTransactionsFromCsvSize; i++) {
-    comparePnbTransactionsFromCsvAndApi(
-        pnbTransactionsFromCsv[i], pnbTransactionFromApi[i], fromAccountId);
+    if (comparePnbTransactionsFromCsvAndApi(pnbTransactionsFromCsv[i],
+            pnbTransactionFromApi[i], fromAccountId) ==
+        false) {
+      unmatchedEntriesCount++;
+    }
   }
+  print('No. of Unmatched Entries : ' + unmatchedEntriesCount.toString());
 }
 
-void comparePnbTransactionsFromCsvAndApi(
+bool comparePnbTransactionsFromCsvAndApi(
     TransactionFromCsvEntity pnbTransactionFromCsv,
     TransactionFromApiEntity pnbTransactionFromApi,
     String fromAccountId) {
+  var result = true;
   var dateOfTransactionFromApi =
       DateFormat('yyyy-M-d').parse(pnbTransactionFromApi.eventDateTime);
   if (pnbTransactionFromCsv.transactionDate != dateOfTransactionFromApi) {
     print('\n' + pnbTransactionFromCsv.toString());
     print(pnbTransactionFromApi.toString());
     print('Error - Unmatched transaction dates...\n');
+    result = false;
   } else {
     if (pnbTransactionFromApi.fromAccountId == fromAccountId) {
       if (pnbTransactionFromCsv.withDrawAmount !=
@@ -65,6 +72,7 @@ void comparePnbTransactionsFromCsvAndApi(
         print('\n' + pnbTransactionFromCsv.toString());
         print(pnbTransactionFromApi.toString());
         print('Error - Unmatched withdraw amount...\n');
+        result = false;
       }
     } else {
       if (pnbTransactionFromCsv.depositAmount !=
@@ -72,7 +80,9 @@ void comparePnbTransactionsFromCsvAndApi(
         print('\n' + pnbTransactionFromCsv.toString());
         print(pnbTransactionFromApi.toString());
         print('Error - Unmatched deposit amount...\n');
+        result = false;
       }
     }
   }
+  return result;
 }
