@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:intl/intl.dart';
 import 'package:pnb_transaction_verifier_for_account_ledger/pnbTransactionReaderForApi.dart'
     as pnb_transaction_reader_for_api;
@@ -5,6 +6,7 @@ import 'package:pnb_transaction_verifier_for_account_ledger/pnbTransactionReader
     as pnb_transaction_reader_for_csv;
 import 'package:pnb_transaction_verifier_for_account_ledger/transactionFromApiEntity.dart';
 import 'package:pnb_transaction_verifier_for_account_ledger/transactionFromCsvEntity.dart';
+import 'package:path/path.dart';
 
 Future<void> main(List<String> arguments) async {
 //  print('Hello world: ${pnb_transaction_verifier_for_account_ledger.calculate()}!');
@@ -12,7 +14,10 @@ Future<void> main(List<String> arguments) async {
   var fromAccountId = '11';
   var pnbTransactionsFromCsv =
       await pnb_transaction_reader_for_csv.getPnbTransactionsFromCsv(
-          r'bin\4356XXXXXXXXX854501-08-2020.csv', 232, 209);
+          join(dirname(Platform.script.toFilePath()),
+              '4356XXXXXXXXX854501-08-2020.csv'),
+          232,
+          209);
 //  pnbTransactionsFromCsv.forEach((transaction) {
 //    print(transaction);
 //  });
