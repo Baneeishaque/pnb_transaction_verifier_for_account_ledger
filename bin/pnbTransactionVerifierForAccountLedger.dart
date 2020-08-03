@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:pnb_transaction_verifier_for_account_ledger/pnbTransactionReaderForApi.dart'
     as pnb_transaction_reader_for_api;
 import 'package:pnb_transaction_verifier_for_account_ledger/pnbTransactionReaderForCsv.dart'
@@ -8,6 +9,7 @@ import 'package:pnb_transaction_verifier_for_account_ledger/transactionFromCsvEn
 Future<void> main(List<String> arguments) async {
 //  print('Hello world: ${pnb_transaction_verifier_for_account_ledger.calculate()}!');
 
+  var fromAccountId = '11';
   var pnbTransactionsFromCsv =
       await pnb_transaction_reader_for_csv.getPnbTransactionsFromCsv(
           r'bin\4356XXXXXXXXX854501-08-2020.csv', 232, 209);
@@ -19,20 +21,58 @@ Future<void> main(List<String> arguments) async {
 
   var pnbTransactionFromApi =
       await pnb_transaction_reader_for_api.getPnbTransactionsFromApi(
-          'http://account-ledger-server.herokuapp.com/http_API/select_User_Transactions_v2.php?user_id=13&account_id=11');
+          'http://account-ledger-server.herokuapp.com/http_API/select_User_Transactions_v2.php?user_id=13&account_id=' +
+              fromAccountId);
 //  pnbTransactionFromApi.forEach((transaction) {
 //    print(transaction);
 //  });
 
-  comparePnbTransactionsFromCsvAndApi(
-      pnbTransactionsFromCsv, pnbTransactionFromApi);
+  comparePnbTransactionsListFromCsvAndApi(
+      pnbTransactionsFromCsv.reversed.skip(551).take(536).toList(),
+      pnbTransactionFromApi,
+      fromAccountId);
+}
+
+void comparePnbTransactionsListFromCsvAndApi(
+    List<TransactionFromCsvEntity> pnbTransactionsFromCsv,
+    List<TransactionFromApiEntity> pnbTransactionFromApi,
+    String fromAccountId) {
+  var pnbTransactionsFromCsvSize = pnbTransactionsFromCsv.length;
+  if (pnbTransactionsFromCsvSize != pnbTransactionFromApi.length) {
+    print(
+        'Warning : Unmatched Transaction Lists, please equalize the size of lists...\n');
+  }
+  for (var i = 0; i < pnbTransactionsFromCsvSize; i++) {
+    comparePnbTransactionsFromCsvAndApi(
+        pnbTransactionsFromCsv[i], pnbTransactionFromApi[i], fromAccountId);
+  }
 }
 
 void comparePnbTransactionsFromCsvAndApi(
-    List<TransactionFromCsvEntity> pnbTransactionsFromCsv,
-    List<TransactionFromApiEntity> pnbTransactionFromApi) {
-  if (pnbTransactionsFromCsv.length != pnbTransactionFromApi.length) {
-    print(
-        'Error : Unmatched Transaction Lists, please equalize the size of lists...');
+    TransactionFromCsvEntity pnbTransactionFromCsv,
+    TransactionFromApiEntity pnbTransactionFromApi,
+    String fromAccountId) {
+  var dateOfTransactionFromApi =
+      DateFormat('yyyy-M-d').parse(pnbTransactionFromApi.eventDateTime);
+  if (pnbTransactionFromCsv.transactionDate != dateOfTransactionFromApi) {
+    print('\n' + pnbTransactionFromCsv.toString());
+    print(pnbTransactionFromApi.toString());
+    print('Error - Unmatched transaction dates...\n');
+  } else {
+    if (pnbTransactionFromApi.fromAccountId == fromAccountId) {
+      if (pnbTransactionFromCsv.withDrawAmount !=
+          double.parse(pnbTransactionFromApi.amount)) {
+        print('\n' + pnbTransactionFromCsv.toString());
+        print(pnbTransactionFromApi.toString());
+        print('Error - Unmatched withdraw amount...\n');
+      }
+    } else {
+      if (pnbTransactionFromCsv.depositAmount !=
+          double.parse(pnbTransactionFromApi.amount)) {
+        print('\n' + pnbTransactionFromCsv.toString());
+        print(pnbTransactionFromApi.toString());
+        print('Error - Unmatched deposit amount...\n');
+      }
+    }
   }
 }

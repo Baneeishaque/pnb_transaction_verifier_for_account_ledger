@@ -8,6 +8,6 @@ class TransactionFromCsvEntity {
 
   @override
   String toString() {
-    return 'TransactionModal{transactionDate: $transactionDate, withDrawAmount: $withDrawAmount, depositAmount: $depositAmount, balanceAmount: $balanceAmount, narration: $narration}';
+    return 'TransactionFromCsvEntity {transactionDate: $transactionDate, withDrawAmount: $withDrawAmount, depositAmount: $depositAmount, balanceAmount: $balanceAmount, narration: $narration}';
   }
 }

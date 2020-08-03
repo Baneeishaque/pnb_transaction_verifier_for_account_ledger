@@ -56,6 +56,6 @@ class TransactionFromApiEntity {
 
   @override
   String toString() {
-    return 'TransactionFromApiEntity{id: $id, eventDateTime: $eventDateTime, particulars: $particulars, amount: $amount, insertionDateTime: $insertionDateTime, fromAccountName: $fromAccountName, fromAccountFullName: $fromAccountFullName, fromAccountId: $fromAccountId, toAccountName: $toAccountName, toAccountFullName: $toAccountFullName, toAccountId: $toAccountId}';
+    return 'TransactionFromApiEntity {id: $id, eventDateTime: $eventDateTime, particulars: $particulars, amount: $amount, insertionDateTime: $insertionDateTime, fromAccountName: $fromAccountName, fromAccountFullName: $fromAccountFullName, fromAccountId: $fromAccountId, toAccountName: $toAccountName, toAccountFullName: $toAccountFullName, toAccountId: $toAccountId}';
   }
 }
