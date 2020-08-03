@@ -16,10 +16,11 @@ Future<List<dynamic>> readCsv(String csvTransactionsFile) async {
   return fields;
 }
 
-void printTransactions(List<dynamic> csvAsList) {
+void printTransactions(
+    List<dynamic> csvAsList, int headerLength, int footerLength) {
   var csvAsListContents = csvAsList[0] as List<dynamic>;
   var csvAsListSizeAfterHeaderAndFooterLength =
-      csvAsListContents.length - 232 - 209;
+      csvAsListContents.length - headerLength - footerLength;
   var transactions = csvAsListContents
       .skip(232)
       .take(csvAsListSizeAfterHeaderAndFooterLength)
@@ -27,8 +28,10 @@ void printTransactions(List<dynamic> csvAsList) {
   printTransactionsInFormat(transactions);
 }
 
-void printTransactionsFromCsv(String csvTransactionsFile) async {
-  printTransactions(await readCsv(csvTransactionsFile));
+void printTransactionsFromCsv(
+    String csvTransactionsFile, int headerLength, int footerLength) async {
+  printTransactions(
+      await readCsv(csvTransactionsFile), headerLength, footerLength);
 }
 
 void printTransactionsInFormat(List<dynamic> csvTransactions) {
