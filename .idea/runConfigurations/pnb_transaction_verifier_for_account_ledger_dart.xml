@@ -1,6 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="pnb_transaction_verifier_for_account_ledger.dart" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
-    <option name="filePath" value="$PROJECT_DIR$/bin/pnb_transaction_verifier_for_account_ledger.dart" />
-    <method v="2" />
-  </configuration>
-</component>
