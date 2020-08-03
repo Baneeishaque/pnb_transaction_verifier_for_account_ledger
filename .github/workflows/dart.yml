@@ -18,7 +18,5 @@ jobs:
     - uses: actions/checkout@v2
     - name: Install dependencies
       run: pub get
-    - name: Change directory to bin folder
-      run: cd bin
     - name: Run pnbTransactionVerifierForAccountLedger.dart
-      run: dart pnbTransactionVerifierForAccountLedger.dart
+      run: dart bin/pnbTransactionVerifierForAccountLedger.dart
