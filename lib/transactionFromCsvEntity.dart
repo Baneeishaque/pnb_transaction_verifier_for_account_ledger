@@ -1,9 +1,9 @@
-class TransactionModal {
+class TransactionFromCsvEntity {
   DateTime transactionDate;
   double withDrawAmount, depositAmount, balanceAmount;
   String narration;
 
-  TransactionModal(this.transactionDate, this.withDrawAmount,
+  TransactionFromCsvEntity(this.transactionDate, this.withDrawAmount,
       this.depositAmount, this.balanceAmount, this.narration);
 
   @override

@@ -1,4 +1,4 @@
-import 'package:pnb_transaction_verifier_for_account_ledger/transactionModal.dart';
+import 'package:pnb_transaction_verifier_for_account_ledger/transactionFromCsvEntity.dart';
 import 'package:intl/intl.dart';
 import 'csvUtils.dart';
 
@@ -22,9 +22,9 @@ Future<List> getPnbTransactionsListFromCsv(String csvTransactionsFile) async {
   return await readCsv(csvTransactionsFile);
 }
 
-List<TransactionModal> getPnbTransactionBeansList(
+List<TransactionFromCsvEntity> getPnbTransactionBeansList(
     List<dynamic> csvTransactions) {
-  var pnbTransactions = <TransactionModal>[];
+  var pnbTransactions = <TransactionFromCsvEntity>[];
   for (var i = 0; i < csvTransactions.length; i = i + 11) {
     var transactionDate = csvTransactions[i];
     var withdrawAmount = csvTransactions[i + 4].toString();
@@ -42,7 +42,7 @@ List<TransactionModal> getPnbTransactionBeansList(
 //        '\t' +
 //        narration);
 
-    pnbTransactions.add(TransactionModal(
+    pnbTransactions.add(TransactionFromCsvEntity(
         DateFormat('d/M/yyyy').parse(transactionDate),
         withdrawAmount.isEmpty
             ? 0
@@ -58,7 +58,7 @@ List<TransactionModal> getPnbTransactionBeansList(
   return pnbTransactions;
 }
 
-Future<List<TransactionModal>> getPnbTransactionsListWrapper(
+Future<List<TransactionFromCsvEntity>> getPnbTransactionsFromCsv(
     String csvTransactionsFile, int headerLength, int footerLength) async {
   return getPnbTransactionBeansList(getPnbTransactionsWithoutHeaderAndFooter(
       await getPnbTransactionsListFromCsv(csvTransactionsFile),
