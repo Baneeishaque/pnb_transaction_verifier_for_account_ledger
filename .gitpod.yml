@@ -10,6 +10,8 @@ github:
     addComment: true
     addBadge: true
     addLabel: true
+tasks:
+  - init: pub get
 vscode:
   extensions:
     - Dart-Code.dart-code@3.13.1:p2leCjK2GHyvjvGHJduP6Q==
